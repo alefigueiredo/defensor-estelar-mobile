@@ -1,0 +1,27 @@
+name: Gerar APK Android (Defensor Estelar)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Compilar APK com Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          command: buildozer android debug
+          workdir: mobile_python_kivy
+          buildozer_version: stable
+
+      - name: Publicar arquivo APK para Download
+        uses: actions/upload-artifact@v4
+        with:
+          name: DefensorEstelar-Android-APK
+          path: mobile_python_kivy/bin/*.apk
+
